@@ -1,12 +1,12 @@
 {
   "profiles": {
-    "SubscriptionManager.Api": {
+    "Application": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:51495;http://localhost:51496"
+      "applicationUrl": "https://localhost:55925;http://localhost:55926"
     }
   }
 }
