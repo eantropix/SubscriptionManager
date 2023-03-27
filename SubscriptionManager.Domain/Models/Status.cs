@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace SubscriptionManager.Domain.Models
 {
-    public class Status
+    public class Status : Entity
     {
-        public int Id { get; set; }
         public string StatusName { get; set; }
     }
 }

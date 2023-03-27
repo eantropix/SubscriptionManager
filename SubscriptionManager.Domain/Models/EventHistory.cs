@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace SubscriptionManager.Domain.Models
 {
-    public class EventHistory
+    public class EventHistory : Entity
     {
-        public int Id { get; set; }
         public int SubscriptionId { get; set; }
         public string Type { get; set; }
         public DateTime CreatedAt { get; set; }

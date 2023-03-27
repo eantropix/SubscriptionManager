@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace SubscriptionManager.Domain.Models
 {
-    public class User : Entity
+    public class Entity
     {
-        public string FullName { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public int Id { get; set; }
     }
 }
