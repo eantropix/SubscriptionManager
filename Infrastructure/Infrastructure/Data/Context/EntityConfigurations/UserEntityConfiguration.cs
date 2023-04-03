@@ -7,18 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Context.EntityConfigurations
+namespace Infrastructure.Data.Context.EntityConfigurations
 {
-    public class SubscriptionEntityConfiguration : IEntityTypeConfiguration<Subscription>
+    public class UserEntityConfiguration : IEntityTypeConfiguration<User>
     {
-        public SubscriptionEntityConfiguration() { }
+        public UserEntityConfiguration() { }
 
-        public void Configure(EntityTypeBuilder<Subscription> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).IsRequired().ValueGeneratedOnAdd();
-            builder.Property(x => x.StatusId).IsRequired();
-            builder.Property(x => x.UserId).IsRequired();
+            builder.Property(x => x.FullName).IsRequired().HasMaxLength(100);
         }
     }
 }

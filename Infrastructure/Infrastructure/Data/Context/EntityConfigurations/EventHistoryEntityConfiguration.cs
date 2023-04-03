@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Context.EntityConfigurations
+namespace Infrastructure.Data.Context.EntityConfigurations
 {
     public class EventHistoryEntityConfiguration : IEntityTypeConfiguration<EventHistory>
     {

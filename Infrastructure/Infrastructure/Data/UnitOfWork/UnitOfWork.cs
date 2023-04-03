@@ -1,16 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Repositories.Interfaces.UnitOfWork;
+using Infrastructure.Data.Context;
 
-namespace Infrastructure.Data.UnitOfWork {
-    public class UnitOfWork {
+namespace Infrastructure.Data.UnitOfWork
+{
+    public class UnitOfWork : IUnitOfWork {
 
-        private readonly DbContext _Context;
+        private readonly AppDbContext _Context;
 
-        public UnitOfWork(DbContext context) {
+        public UnitOfWork(AppDbContext context) {
             _Context = context;
         }
 

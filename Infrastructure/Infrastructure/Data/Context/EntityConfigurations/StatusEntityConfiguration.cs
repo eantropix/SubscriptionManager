@@ -7,17 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Context.EntityConfigurations
+namespace Infrastructure.Data.Context.EntityConfigurations
 {
-    public class UserEntityConfiguration : IEntityTypeConfiguration<User>
+    public class StatusEntityConfiguration : IEntityTypeConfiguration<Status>
     {
-        public UserEntityConfiguration() { }
-
-        public void Configure(EntityTypeBuilder<User> builder)
+        public StatusEntityConfiguration() { }
+        public void Configure(EntityTypeBuilder<Status> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).IsRequired().ValueGeneratedOnAdd();
-            builder.Property(x => x.FullName).IsRequired().HasMaxLength(100);
+            builder.Property(x => x.StatusName).IsRequired().HasMaxLength(50);
         }
     }
 }

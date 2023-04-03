@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Infrastructure.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using SubscriptionManager.Domain.Models;
 using SubscriptionManager.Domain.Repositories.Interfaces;
 
@@ -7,9 +8,9 @@ namespace Infrastructure.Data.Repositories
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
 
-        protected readonly DbContext _Context;
+        protected readonly AppDbContext _Context;
 
-        public Repository(DbContext context)
+        public Repository(AppDbContext context)
         {
             _Context = context;
             _Context.Set<TEntity>();
@@ -17,8 +18,11 @@ namespace Infrastructure.Data.Repositories
 
         public TEntity Create(TEntity entity)
         {
-            _Context.Add(entity);
-            return entity;
+            if (entity.Id != 0) {
+                throw new InvalidOperationException("Cannot create with specified ID");
+            }
+                _Context.Add(entity);
+                return entity;
         }
         public TEntity Read(int id)
         {
