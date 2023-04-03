@@ -1,7 +1,10 @@
-using Domain.Context;
+using Application.Interfaces.Services;
+using Application.Services;
+using Infrastructure.Data.Context;
+using Domain.Repositories.Interfaces.UnitOfWork;
 using Infrastructure.Data.Repositories;
+using Infrastructure.Data.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using SubscriptionManager.Domain.Models;
 using SubscriptionManager.Domain.Repositories.Interfaces;
 
@@ -13,12 +16,21 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
+builder.Services.AddDbContext<AppDbContext>
+    (options =>  
+        options.UseSqlServer(builder.Configuration.GetConnectionString("default")),
+        ServiceLifetime.Singleton
+    );
 
 builder.Services.AddScoped<IRepository<EventHistory>, EventHistoryRepository>();
 builder.Services.AddScoped<IRepository<Status>, StatusRepository>();
 builder.Services.AddScoped<IRepository<Subscription>, SubscriptionRepository>();
 builder.Services.AddScoped<IRepository<User>, UserRepository>();
+
+// App Services
+builder.Services.AddScoped<IUserAppService, UserAppService>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 var app = builder.Build();
