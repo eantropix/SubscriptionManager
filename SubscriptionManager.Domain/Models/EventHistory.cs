@@ -11,5 +11,6 @@ namespace SubscriptionManager.Domain.Models
         public int SubscriptionId { get; set; }
         public string Type { get; set; }
         public DateTime CreatedAt { get; set; }
+        public virtual Subscription Subscription { get; set; }
     }
 }
