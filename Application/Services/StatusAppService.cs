@@ -10,22 +10,22 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class UserAppService : MessageBrokerAppService<User>, IUserAppService
+    public class StatusAppService : MessageBrokerAppService<Status>, IStatusAppService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IRepository<User> _repository;
-        private const string _createRoute = "CREATE_USER_RK";
-        private const string _readRoute = "READ_USER_RK";
-        private const string _updateRoute = "UPDATE_USER_RK";
-        private const string _deleteRoute = "DELETE_USER_RK";
+        private readonly IRepository<Status> _repository;
+        private const string _createRoute = "CREATE_STATUS_RK";
+        private const string _readRoute = "READ_STATUS_RK";
+        private const string _updateRoute = "UPDATE_STATUS_RK";
+        private const string _deleteRoute = "DELETE_STATUS_RK";
 
-        public UserAppService(IRepository<User> repository, IUnitOfWork unitOfWork) : base("usersQueue")
+        public StatusAppService(IRepository<Status> repository, IUnitOfWork unitOfWork) : base("statusQueue")
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
         }
 
-        protected override void Consume(User message, string routeKey)
+        protected override void Consume(Status message, string routeKey)
         {
             switch (routeKey) {
                 case _createRoute:
@@ -44,24 +44,24 @@ namespace Application.Services
             _unitOfWork.Commit();
         }
 
-        public void Create(User user)
+        public void Create(Status status)
         {
-            Publish(user, _createRoute);
+            Publish(status, _createRoute);
         }
         
-        public void Read(int userId)
+        public void Read(int statusId)
         {
-            Publish(userId, _readRoute);
+            Publish(statusId, _readRoute);
         }
 
-        public void Update(User user)
+        public void Update(Status status)
         {
-            Publish(user, _updateRoute);
+            Publish(status, _updateRoute);
         }
 
-        public void Delete(int userId)
+        public void Delete(int statusId)
         {
-            Publish(userId, _deleteRoute);
+            Publish(statusId, _deleteRoute);
         }
     }
 }
