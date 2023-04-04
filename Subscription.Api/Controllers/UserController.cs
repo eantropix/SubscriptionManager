@@ -5,7 +5,7 @@ using SubscriptionManager.Domain.Models;
 namespace SubscriptionManager.Api.Controllers
 {
     [ApiController]
-    [Route ("api/[controller]")]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserAppService _userAppService;
@@ -28,8 +28,31 @@ namespace SubscriptionManager.Api.Controllers
         /// </example>
         public async Task<IActionResult> CreateUser([FromBody] User user)
         {
-            _userAppService.Publish(user, "createUser");
+            _userAppService.Create(user);
             return Ok();
         }
+
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> ReadUser(int userId)
+        {
+            var user = _userAppService.Read(userId);
+            return Ok(user);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser([FromBody] User user)
+        {
+            _userAppService.Update(user);
+            return Ok();
+        }
+
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            _userAppService.Delete(userId);
+            return Ok();
+        }
+
+
     }
 }

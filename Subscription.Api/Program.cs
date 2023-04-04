@@ -30,6 +30,7 @@ builder.Services.AddScoped<IRepository<User>, UserRepository>();
 // App Services
 builder.Services.AddScoped<IUserAppService, UserAppService>();
 builder.Services.AddScoped<IStatusAppService, StatusAppService>();
+builder.Services.AddScoped<ISubscriptionAppService, SubscriptionAppService>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
