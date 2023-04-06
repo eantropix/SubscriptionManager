@@ -1,7 +1,7 @@
 ﻿using Application.Interfaces.Services;
 using Domain.Repositories.Interfaces.UnitOfWork;
-using SubscriptionManager.Domain.Models;
-using SubscriptionManager.Domain.Repositories.Interfaces;
+using Domain.Models;
+using Domain.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

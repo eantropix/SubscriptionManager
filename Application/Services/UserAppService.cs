@@ -1,12 +1,7 @@
 ﻿using Application.Interfaces.Services;
 using Domain.Repositories.Interfaces.UnitOfWork;
-using SubscriptionManager.Domain.Models;
-using SubscriptionManager.Domain.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Models;
+using Domain.Repositories.Interfaces;
 
 namespace Application.Services
 {
@@ -19,7 +14,7 @@ namespace Application.Services
         private const string _updateRoute = "UPDATE_USER_RK";
         private const string _deleteRoute = "DELETE_USER_RK";
 
-        public UserAppService(IRepository<User> repository, IUnitOfWork unitOfWork) : base("usersQueue")
+        public UserAppService(IRepository<User> repository, IUnitOfWork unitOfWork) : base("userQueue")
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
@@ -30,9 +25,6 @@ namespace Application.Services
             switch (routeKey) {
                 case _createRoute:
                     _repository.Create(message);
-                    break;
-                case _readRoute:
-                    _repository.Read(message.Id);
                     break;
                 case _updateRoute:
                     _repository.Update(message);
@@ -49,9 +41,9 @@ namespace Application.Services
             Publish(user, _createRoute);
         }
         
-        public void Read(int userId)
-        {
-            Publish(userId, _readRoute);
+        public User Read(int userId)
+        {            
+            return _repository.Read(userId);
         }
 
         public void Update(User user)

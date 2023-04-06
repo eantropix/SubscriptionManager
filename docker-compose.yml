@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  api:
+    image: SubscriptionManager
+    ports:
+      - "51495:51495"
+      - "51496:51496"
+    depends_on:
+      - database
+      - broker
+    environment:
+      - DB_CONNECTION_STRING=Server=database;Database=SubscriptionManager;User Id=SA;Password=Subscription1433
+      - RABBITMQ_HOST=broker
+      - RABBITMQ_PORT=5672
+
+  database:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Subscription1433
+      - MSSQL_PID=Developer
+
+  broker:
+    image: rabbitmq:3.9-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
