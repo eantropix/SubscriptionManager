@@ -2,7 +2,7 @@ version: '3'
 
 services:
   api:
-    image: SubscriptionManager
+    image: subscription-manager
     ports:
       - "51495:51495"
       - "51496:51496"
@@ -15,7 +15,7 @@ services:
       - RABBITMQ_PORT=5672
 
   database:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     ports:
       - "1433:1433"
     environment:
@@ -24,7 +24,7 @@ services:
       - MSSQL_PID=Developer
 
   broker:
-    image: rabbitmq:3.9-management
+    image: rabbitmq:latest
     ports:
       - "5672:5672"
       - "15672:15672"
