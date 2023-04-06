@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "SubscriptionManager.Api": {
+    "Api": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

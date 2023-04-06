@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 
-namespace SubscriptionManager.Api.Controllers
+namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
