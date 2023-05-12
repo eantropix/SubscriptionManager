@@ -22,7 +22,6 @@ namespace Infrastructure.Data.Context {
             modelBuilder.ApplyConfiguration(new StatusEntityConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
-
         }
 
     }

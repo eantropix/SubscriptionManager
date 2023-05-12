@@ -2,7 +2,7 @@
 
 namespace Application.Interfaces.Services
 {
-    public interface IUserAppService : IMessageBrokerAppService<User>
+    public interface IUserAppService
     {
         void Create(User user);
         User Read(int userId);

@@ -10,58 +10,40 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class StatusAppService : MessageBrokerAppService<Status>, IStatusAppService
+    public class StatusAppService : IStatusAppService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly Publisher _publisher;
         private readonly IRepository<Status> _repository;
+
         private const string _createRoute = "CREATE_STATUS_RK";
         private const string _readRoute = "READ_STATUS_RK";
         private const string _updateRoute = "UPDATE_STATUS_RK";
         private const string _deleteRoute = "DELETE_STATUS_RK";
 
-        public StatusAppService(IRepository<Status> repository, IUnitOfWork unitOfWork) : base("statusQueue")
+        public StatusAppService(IRepository<Status> repository, Publisher publisher)
         {
             _repository = repository;
-            _unitOfWork = unitOfWork;
-        }
-
-        protected override void Consume(Status message, string routeKey)
-        {
-            switch (routeKey) {
-                case _createRoute:
-                    _repository.Create(message);
-                    break;
-                case _readRoute:
-                    _repository.Read(message.Id);
-                    break;
-                case _updateRoute:
-                    _repository.Update(message);
-                    break;
-                case _deleteRoute:
-                    _repository.Delete(message.Id);
-                    break;
-            }
-            _unitOfWork.Commit();
+            _publisher = publisher;
         }
 
         public void Create(Status status)
         {
-            Publish(status, _createRoute);
+            _publisher.Publish(status, _createRoute);
         }
         
-        public void Read(int statusId)
+        public Status Read(int statusId)
         {
-            Publish(statusId, _readRoute);
+            return _repository.Read(statusId);
         }
 
         public void Update(Status status)
         {
-            Publish(status, _updateRoute);
+            _publisher.Publish(status, _updateRoute);
         }
 
         public void Delete(int statusId)
         {
-            Publish(statusId, _deleteRoute);
+            _publisher.Publish(new Status { Id = statusId } , _deleteRoute);
         }
     }
 }

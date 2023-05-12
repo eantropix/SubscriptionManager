@@ -10,65 +10,42 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class SubscriptionAppService : MessageBrokerAppService<Subscription>, ISubscriptionAppService
+    public class SubscriptionAppService : ISubscriptionAppService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly Publisher _publisher;
         private readonly IRepository<Subscription> _repository;
-        private readonly IRepository<EventHistory> _eventRepository;
+
+        public SubscriptionAppService(IRepository<Subscription> repository, Publisher publisher)
+        {
+            _publisher = publisher;
+            _repository = repository;
+        }
+
         private const string _createRoute = "CREATE_SUBSCRIPTION_RK";
-        private const string _readRoute = "READ_SUBSCRIPTION_RK";
+        private const string _readRoute  = "READ_SUBSCRIPTION_RK";
         private const string _updateRoute = "UPDATE_SUBSCRIPTION_RK";
         private const string _deleteRoute = "DELETE_SUBSCRIPTION_RK";
 
-        public SubscriptionAppService(IRepository<Subscription> repository, IUnitOfWork unitOfWork, IRepository<EventHistory> eventRepository) : base("subscriptionQueue")
-        {
-            _repository = repository;
-            _unitOfWork = unitOfWork;
-            _eventRepository = eventRepository;
-        }
-
-        protected override void Consume(Subscription message, string routeKey)
-        {
-            switch (routeKey) {
-                case _createRoute:
-                    _repository.Create(message);
-                    _eventRepository.Create(new EventHistory { 
-                        Subscription = message, 
-                        SubscriptionId = message.Id, 
-                        Type = message.Status.StatusName, 
-                        CreatedAt = message.CreatedAt });
-                    break;
-                case _readRoute:
-                    _repository.Read(message.Id);
-                    break;
-                case _updateRoute:
-                    _repository.Update(message);
-                    break;
-                case _deleteRoute:
-                    _repository.Delete(message.Id);
-                    break;
-            }
-            _unitOfWork.Commit();
-        }
+        public SubscriptionAppService() { }
 
         public void Create(Subscription subscription)
         {
-            Publish(subscription, _createRoute);
+            _publisher.Publish(subscription, _createRoute);
         }
         
-        public void Read(int subscriptionId)
+        public Subscription Read(int subscriptionId)
         {
-            Publish(subscriptionId, _readRoute);
+            return _repository.Read(subscriptionId);
         }
 
         public void Update(Subscription subscription)
         {
-            Publish(subscription, _updateRoute);
+            _publisher.Publish(subscription, _updateRoute);
         }
 
         public void Delete(int subscriptionId)
         {
-            Publish(subscriptionId, _deleteRoute);
+            _publisher.Publish(new Subscription { Id = subscriptionId }, _deleteRoute);
         }
     }
 }
