@@ -12,7 +12,7 @@ using Application.Interfaces.Services;
 
 namespace Application.Services
 {
-    public abstract class Publisher
+    public class Publisher
     {
         private readonly IConnection _connection;
         private readonly IModel _channel;
