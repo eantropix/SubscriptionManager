@@ -2,19 +2,25 @@ version: '3'
 
 services:
   api:
+    container_name: api
+    build: 
+       context: .
+       dockerfile: Api/Dockerfile
     image: subscription-manager
     ports:
-      - "51495:51495"
-      - "51496:51496"
+      - "51495:80"
+      - "51496:443"
     depends_on:
       - database
-      - broker
+      - rabbitmq
     environment:
-      - DB_CONNECTION_STRING=Server=database;Database=SubscriptionManager;User Id=SA;Password=Subscription1433
-      - RABBITMQ_HOST=broker
-      - RABBITMQ_PORT=5672
+      # - ConnectionStrings__Default=Server=database;Database=SubscriptionManager;User Id=SA;Password=Subscription1433;TrustServerCertificate=True
+      - ConnectionStrings__database=Server=localhost;Database=SubscriptionManager;User Id=SA;Password=Subscription1433;TrustServerCertificate=True
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__Port=5672
 
   database:
+    container_name: database
     image: mcr.microsoft.com/mssql/server:2022-latest
     ports:
       - "1433:1433"
@@ -22,9 +28,12 @@ services:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Subscription1433
       - MSSQL_PID=Developer
+    volumes:
+    - ./database:/var/opt/mssql/data
 
-  broker:
-    image: rabbitmq:latest
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
     ports:
       - "5672:5672"
       - "15672:15672"
