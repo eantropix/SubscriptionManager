@@ -25,10 +25,14 @@ builder.Services.AddDbContext<AppDbContext>
     );
 
 builder.Services.AddSingleton<IConnectionFactory>((service) => new ConnectionFactory {
-    HostName = builder.Configuration["RabbitMQ:host"],
-    Port = int.Parse(builder.Configuration["RabbitMQ:port"]),
-    UserName = builder.Configuration["RabbitMQ:username"],
-    Password = builder.Configuration["RabbitMQ:password"]
+    //HostName = builder.Configuration["rabbitmq"],
+    //Port = int.Parse(builder.Configuration["5672"]),
+    //UserName = builder.Configuration["guest"],
+    //Password = builder.Configuration["guest"]
+    HostName = "rabbitmq",
+    Port = 5672,
+    UserName = "guest",
+    Password = "guest"
 });
 
 builder.Services.AddHostedService<StatusConsumerAppService>();

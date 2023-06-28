@@ -8,14 +8,14 @@ services:
        dockerfile: Api/Dockerfile
     image: subscription-manager
     ports:
-      - "51495:80"
-      - "51496:443"
-    depends_on:
+      - "51595:80"
+      - "51596:443"
+    links:
       - database
       - rabbitmq
     environment:
-      # - ConnectionStrings__Default=Server=database;Database=SubscriptionManager;User Id=SA;Password=Subscription1433;TrustServerCertificate=True
-      - ConnectionStrings__database=Server=localhost;Database=SubscriptionManager;User Id=SA;Password=Subscription1433;TrustServerCertificate=True
+      - ConnectionStrings__Default=Server=database;Database=SubscriptionManager;User Id=sa;Password=Subscription1433;TrustServerCertificate=True
+      # - ConnectionStrings__database=Server=localhost;Database=SubscriptionManager;User Id=SA;Password=Subscription1433;TrustServerCertificate=True
       - RabbitMQ__Host=rabbitmq
       - RabbitMQ__Port=5672
 
