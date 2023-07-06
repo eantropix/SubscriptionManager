@@ -22,7 +22,9 @@ namespace Application.Services.Consumers
         {
             _queueName = typeof(T).Name;
             _exchangeName = $"ex.{_queueName}";
-            _connection = factory.CreateConnection();
+            if (_connection == null || !_connection.IsOpen) {
+                _connection = factory.CreateConnection();
+            }
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(
                                queue: _queueName,

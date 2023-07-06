@@ -22,18 +22,21 @@ namespace Application.Services
 
         public Publisher(IConnectionFactory factory)
         {
-            _connection = factory.CreateConnection();
-            _channel = _connection.CreateModel();
+            if (_connection == null || !_connection.IsOpen) {
+                _connection = factory.CreateConnection();
+            }
         }
 
         public void Publish<T>(T body, string routeKey = "")
         {
             _queueName = typeof(T).Name;
             _exchangeName = $"ex.{_queueName}";
-            _channel.ExchangeDeclare(_exchangeName, "fanout");
-            var message = JsonConvert.SerializeObject(body);
-            var messageBytes = Encoding.UTF8.GetBytes(message);
-            _channel.BasicPublish(exchange: _exchangeName, routingKey: routeKey, basicProperties: null, body: messageBytes, mandatory: true);
+            using (var channel = _connection.CreateModel()) {
+                channel.ExchangeDeclare(_exchangeName, "fanout");
+                var message = JsonConvert.SerializeObject(body);
+                var messageBytes = Encoding.UTF8.GetBytes(message);
+                channel.BasicPublish(exchange: _exchangeName, routingKey: routeKey, basicProperties: null, body: messageBytes, mandatory: true);
+            }
 
         }
     }

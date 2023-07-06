@@ -11,7 +11,7 @@ using RabbitMQ.Client;
 using Application.Services.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -25,14 +25,15 @@ builder.Services.AddDbContext<AppDbContext>
     );
 
 builder.Services.AddSingleton<IConnectionFactory>((service) => new ConnectionFactory {
-    //HostName = builder.Configuration["rabbitmq"],
-    //Port = int.Parse(builder.Configuration["5672"]),
-    //UserName = builder.Configuration["guest"],
-    //Password = builder.Configuration["guest"]
-    HostName = "rabbitmq",
-    Port = 5672,
-    UserName = "guest",
-    Password = "guest"
+    HostName = builder.Configuration["RabbitMQ:Host"],
+    Port = int.Parse(builder.Configuration["RabbitMQ:Port"]),
+    UserName = builder.Configuration["RabbitMQ:Username"],
+    Password = builder.Configuration["RabbitMQ:Password"],
+    
+    //HostName = "rabbitmq",
+    //Port = 5672,
+    //UserName = "guest",
+    //Password = "guest"
 });
 
 builder.Services.AddHostedService<StatusConsumerAppService>();
@@ -45,7 +46,7 @@ builder.Services.AddScoped<IRepository<Status>, StatusRepository>();
 builder.Services.AddScoped<IRepository<Subscription>, SubscriptionRepository>();
 builder.Services.AddScoped<IRepository<User>, UserRepository>();
 
-builder.Services.AddScoped<Publisher>();
+builder.Services.AddSingleton<Publisher>();
 
 // App Services
 builder.Services.AddScoped<IUserAppService, UserAppService>();
