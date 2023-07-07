@@ -15,10 +15,10 @@ namespace Application.Services.Consumers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<Subscription> _repository;
         private readonly IRepository<EventHistory> _eventRepository;
-        private const string _createRoute = "CREATE_STATUS_RK";
-        private const string _readRoute = "READ_STATUS_RK";
-        private const string _updateRoute = "UPDATE_STATUS_RK";
-        private const string _deleteRoute = "DELETE_STATUS_RK";
+        private const string _createRoute = "CREATE_SUBSCRIPTION_RK";
+        private const string _readRoute = "READ_SUBSCRIPTION_RK";
+        private const string _updateRoute = "UPDATE_SUBSCRIPTION_RK";
+        private const string _deleteRoute = "DELETE_SUBSCRIPTION_RK";
         public SubscriptionConsumerAppService(IRepository<Subscription> repository, IUnitOfWork unitOfWork, IRepository<EventHistory> eventRepository, IConnectionFactory factory) : base(factory)
         {
             _repository = repository;

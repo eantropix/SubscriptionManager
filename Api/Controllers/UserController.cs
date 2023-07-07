@@ -28,6 +28,7 @@ namespace Api.Controllers
         /// </example>
         public async Task<IActionResult> CreateUser([FromBody] User user)
         {
+            user.CreatedAt = DateTime.Now;
             _userAppService.Create(user);
             return Ok();
         }
