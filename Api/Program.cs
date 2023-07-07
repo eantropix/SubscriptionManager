@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>
     (options =>  
         options.UseSqlServer(builder.Configuration.GetConnectionString("database")),
-        ServiceLifetime.Singleton
+        ServiceLifetime.Scoped
     );
 
 builder.Services.AddSingleton<IConnectionFactory>((service) => new ConnectionFactory {
@@ -29,11 +29,6 @@ builder.Services.AddSingleton<IConnectionFactory>((service) => new ConnectionFac
     Port = int.Parse(builder.Configuration["RabbitMQ:Port"]),
     UserName = builder.Configuration["RabbitMQ:Username"],
     Password = builder.Configuration["RabbitMQ:Password"],
-    
-    //HostName = "rabbitmq",
-    //Port = 5672,
-    //UserName = "guest",
-    //Password = "guest"
 });
 
 builder.Services.AddHostedService<StatusConsumerAppService>();
