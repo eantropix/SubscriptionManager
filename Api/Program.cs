@@ -31,10 +31,10 @@ builder.Services.AddSingleton<IConnectionFactory>((service) => new ConnectionFac
     Password = builder.Configuration["RabbitMQ:Password"],
 });
 
+builder.Services.AddHostedService<EventHistoryConsumerAppService>();
 builder.Services.AddHostedService<StatusConsumerAppService>();
 builder.Services.AddHostedService<SubscriptionConsumerAppService>();
 builder.Services.AddHostedService<UserConsumerAppService>();
-
 
 builder.Services.AddScoped<IRepository<EventHistory>, EventHistoryRepository>();
 builder.Services.AddScoped<IRepository<Status>, StatusRepository>();
@@ -44,9 +44,10 @@ builder.Services.AddScoped<IRepository<User>, UserRepository>();
 builder.Services.AddSingleton<Publisher>();
 
 // App Services
-builder.Services.AddScoped<IUserAppService, UserAppService>();
+builder.Services.AddScoped<IEventHistoryAppService, EventHistoryAppService>();
 builder.Services.AddScoped<IStatusAppService, StatusAppService>();
 builder.Services.AddScoped<ISubscriptionAppService, SubscriptionAppService>();
+builder.Services.AddScoped<IUserAppService, UserAppService>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

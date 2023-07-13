@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.DTO;
 
 namespace Application.Services
 {
@@ -15,21 +16,24 @@ namespace Application.Services
         private readonly Publisher _publisher;
         private readonly IRepository<Subscription> _repository;
 
+        private const string _createRoute = "CREATE_SUBSCRIPTION_RK";
+        private const string _readRoute  = "READ_SUBSCRIPTION_RK";
+        private const string _updateRoute = "UPDATE_SUBSCRIPTION_RK";
+        private const string _deleteRoute = "DELETE_SUBSCRIPTION_RK";
+
         public SubscriptionAppService(IRepository<Subscription> repository, Publisher publisher)
         {
             _publisher = publisher;
             _repository = repository;
         }
 
-        private const string _createRoute = "CREATE_SUBSCRIPTION_RK";
-        private const string _readRoute  = "READ_SUBSCRIPTION_RK";
-        private const string _updateRoute = "UPDATE_SUBSCRIPTION_RK";
-        private const string _deleteRoute = "DELETE_SUBSCRIPTION_RK";
-
-        public SubscriptionAppService() { }
-
-        public void Create(Subscription subscription)
+        public void Create(SubscriptionDTO subscriptionDTO)
         {
+            var subscription = new Subscription {
+                UserId = subscriptionDTO.UserId,
+                StatusId = subscriptionDTO.StatusId,
+                CreatedAt = DateTime.Now,
+            };
             _publisher.Publish(subscription, _createRoute);
         }
         
@@ -38,8 +42,14 @@ namespace Application.Services
             return _repository.Read(subscriptionId);
         }
 
-        public void Update(Subscription subscription)
+        public void Update(SubscriptionDTO subscriptionDTO)
         {
+            var subscription = new Subscription {
+                Id = subscriptionDTO.Id,
+                UserId = subscriptionDTO.UserId,
+                StatusId = subscriptionDTO.StatusId,
+                UpdatedAt = DateTime.Now,
+            };
             _publisher.Publish(subscription, _updateRoute);
         }
 

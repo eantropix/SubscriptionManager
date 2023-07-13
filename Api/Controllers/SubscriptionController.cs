@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
+using Application.DTO;
 
 namespace Api.Controllers
 {
@@ -16,23 +17,23 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSubscription([FromBody] Subscription subscription)
+        public async Task<IActionResult> CreateSubscription([FromBody] SubscriptionDTO subscriptionDTO)
         {
-            _subscriptionAppService.Create(subscription);
+            _subscriptionAppService.Create(subscriptionDTO);
             return Ok();
         }
 
         [HttpGet("{subscriptionId}")]
         public async Task<IActionResult> ReadSubscription(int subscriptionId)
         {
-            _subscriptionAppService.Read(subscriptionId);
-            return Ok();
+            var subscription = _subscriptionAppService.Read(subscriptionId);
+            return Ok(subscription);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateSubscription([FromBody] Subscription subscription)
+        public async Task<IActionResult> UpdateSubscription([FromBody] SubscriptionDTO subscriptionDTO)
         {
-            _subscriptionAppService.Update(subscription);
+            _subscriptionAppService.Update(subscriptionDTO);
             return Ok();
         }
 
