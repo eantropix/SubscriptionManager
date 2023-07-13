@@ -25,8 +25,8 @@ namespace Api.Controllers
         [HttpGet("{statusId}")]
         public async Task<IActionResult> ReadStatus(int statusId)
         {
-            _statusAppService.Read(statusId);
-            return Ok();
+            var status = _statusAppService.Read(statusId);
+            return Ok(status);
         }
 
         [HttpPut]
