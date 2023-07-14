@@ -23,6 +23,7 @@ namespace Application.Services
         public Publisher(IConnectionFactory factory)
         {
             if (_connection == null || !_connection.IsOpen) {
+                factory.ClientProvidedName = $"conn.Publisher";
                 _connection = factory.CreateConnection();
             }
         }

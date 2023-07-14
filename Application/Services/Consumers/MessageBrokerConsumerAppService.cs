@@ -23,6 +23,7 @@ namespace Application.Services.Consumers
             _queueName = typeof(T).Name;
             _exchangeName = $"ex.{_queueName}";
             if (_connection == null || !_connection.IsOpen) {
+                factory.ClientProvidedName = $"conn.{_queueName}";
                 _connection = factory.CreateConnection();
             }
             _channel = _connection.CreateModel();
